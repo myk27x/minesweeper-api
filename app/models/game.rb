@@ -17,15 +17,9 @@ class Game < ActiveRecord::Base
     self.state = "playing"
 
     # YOUR CODE GOES HERE TO PLACE THE RIGHT NUMBER OF BOMBS
-
-    # self.mine_locations = (as_json[:mines].to_i).times do
-    #   board[rand(row)][rand(col)] = "*"
     until self.mine_locations.length == as_json[:mines].to_i
-      new_mine = [rand(0..(size - 1)), rand(0..(size - 1))]
-      if self.mine_locations.include?(new_mine)
-      else
-        self.mine_locations << new_mine
-      end
+      mine = [rand(0..(size - 1)), rand(0..(size - 1))]
+      self.mine_locations << mine unless self.mine_locations.include?(mine)
     end
   end
 
@@ -63,6 +57,8 @@ class Game < ActiveRecord::Base
     end
   end
 
+
+
   def compute_mines_for(row, col)
     total = 0
     (-1..1).each do |row_offset|
@@ -75,7 +71,10 @@ class Game < ActiveRecord::Base
       end
     end
 
-    board[row][col] = total
+    unless board[row][col] == FLAG
+      board[row][col] = total
+    end
+
   end
 
   def flag_count
