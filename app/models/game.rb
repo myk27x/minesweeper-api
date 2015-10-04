@@ -16,10 +16,17 @@ class Game < ActiveRecord::Base
   def place_mines(row, col)
     self.state = "playing"
 
-    #
     # YOUR CODE GOES HERE TO PLACE THE RIGHT NUMBER OF BOMBS
-    #
-    # self.mine_locations = ...
+
+    # self.mine_locations = (as_json[:mines].to_i).times do
+    #   board[rand(row)][rand(col)] = "*"
+    until self.mine_locations.length == as_json[:mines].to_i
+      new_mine = [rand(0..(size - 1)), rand(0..(size - 1))]
+      if self.mine_locations.include?(new_mine)
+      else
+        self.mine_locations << new_mine
+      end
+    end
   end
 
   def flag(row, col)
