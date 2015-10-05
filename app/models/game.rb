@@ -19,7 +19,7 @@ class Game < ActiveRecord::Base
     # YOUR CODE GOES HERE TO PLACE THE RIGHT NUMBER OF BOMBS
     until self.mine_locations.length == as_json[:mines].to_i
       mine = [rand(0..(size - 1)), rand(0..(size - 1))]
-      self.mine_locations << mine unless self.mine_locations.include?(mine)
+      self.mine_locations << mine unless self.mine_locations.include?(mine) || mine == [row, col]
     end
   end
 
